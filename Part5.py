@@ -187,6 +187,8 @@ try:
 except mysql.connector.Error as err:
     if err.sqlstate == '23000':
         print("An entry for ({}, {}) already exists.".format(year, nationality))
+    elif err.sqlstate == '23000':
+        print("The arrival count <{}> is invalid.".format(arrival_count))
     else:
         print("Error while connecting to MySQL", err)   
 finally:

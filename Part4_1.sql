@@ -9,8 +9,17 @@ CREATE PROCEDURE insNewArrivalByNationality(
     BEGIN
         DECLARE nextCountryId INT;
 
-        -- TODO: Add rollback
-        -- Check if the year exists
+        -- Rollback when an error occurs
+        DECLARE EXIT HANDLER FOR SQLEXCEPTION
+        BEGIN
+            ROLLBACK;
+            RESIGNAL;
+        END;
+
+        -- Starting the transaction
+        START TRANSACTION;
+
+        -- Check if the year exists, if not then insert
         IF p_year NOT IN (
             SELECT year
             FROM Year
@@ -19,7 +28,7 @@ CREATE PROCEDURE insNewArrivalByNationality(
             VALUES (p_year);
         END IF;
 
-        -- Check if the country exists
+        -- Check if the country exists, if not then insert
         IF p_countryName NOT IN (
             SELECT name
             FROM Country
@@ -27,7 +36,9 @@ CREATE PROCEDURE insNewArrivalByNationality(
             INSERT INTO Country (name, continent)
             VALUES (p_countryName, NULL);
 
+            -- retrieves the countryId
             SET nextCountryId = LAST_INSERT_ID();
+        -- if it is then find its countryId
         ELSE
         -- NOTE: Assuming that country names are unique
             SELECT countryId INTO nextCountryId
@@ -38,6 +49,8 @@ CREATE PROCEDURE insNewArrivalByNationality(
         -- Insert into ArrivalByNationality
         INSERT INTO ArrivalByNationality
         VALUES (p_year, nextCountryId, p_arrivalCount);
+
+        COMMIT;
     END //
 DELIMITER ;
 
