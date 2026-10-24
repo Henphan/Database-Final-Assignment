@@ -42,8 +42,6 @@ CREATE PROCEDURE insNewArrivalByNationality(
 DELIMITER ;
 
 
-
-
 DROP TRIGGER after_ArrivalByNationality_update;
 DELIMITER //
 CREATE TRIGGER before_ArrivalByNationality_update
@@ -60,9 +58,21 @@ CREATE TRIGGER before_ArrivalByNationality_update
 DELIMITER ;
 
 
+DROP VIEW YoY_ArrivalByNationality;
 CREATE VIEW YoY_ArrivalByNationality AS
-    SELECT A1.*, A2.arrivalCount
+    SELECT A1.year, C.name, A1.arrivalCount AS previous_year, A2.arrivalCount AS current_year, 100 - (A2.arrivalCount / A1.arrivalCount * 100) AS YoY_pct_change
     FROM ArrivalByNationality A1
     INNER JOIN ArrivalByNationality A2
     ON A1.countryId = A2.countryId
-    AND A1.year = B.year + 1
+    AND A1.year = A2.year + 1
+    INNER JOIN Country C
+    ON C.countryId = A1.countryId;
+
+SELECT * FROM YoY_ArrivalByNationality;
+
+UPDATE ArrivalByNationality
+SET arrivalCount = -6
+WHERE year = '2026';
+
+SELECT * FROM ArrivalByNationality;
+
