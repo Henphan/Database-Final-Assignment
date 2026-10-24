@@ -67,12 +67,3 @@ CREATE VIEW YoY_ArrivalByNationality AS
     AND A1.year = A2.year + 1
     INNER JOIN Country C
     ON C.countryId = A1.countryId;
-
-SELECT * FROM YoY_ArrivalByNationality;
-
-UPDATE ArrivalByNationality
-SET arrivalCount = -6
-WHERE year = '2026';
-
-SELECT * FROM ArrivalByNationality;
-
