@@ -42,7 +42,8 @@ CREATE PROCEDURE insNewArrivalByNationality(
 DELIMITER ;
 
 
-DROP TRIGGER after_ArrivalByNationality_update;
+-- TODO: Replace
+DROP TRIGGER before_ArrivalByNationality_update;
 DELIMITER //
 CREATE TRIGGER before_ArrivalByNationality_update
     BEFORE UPDATE ON ArrivalByNationality
@@ -60,7 +61,8 @@ DELIMITER ;
 
 DROP VIEW YoY_ArrivalByNationality;
 CREATE VIEW YoY_ArrivalByNationality (year, countryName, previous_year, current_year, pct_change) AS
-    SELECT A1.year, C.name, A1.arrivalCount AS previous_year, A2.arrivalCount, 100 - (A2.arrivalCount / A1.arrivalCount * 100)
+    SELECT A1.year, C.name, A2.arrivalCount, A1.arrivalCount,
+    (A1.arrivalCount / A2.arrivalCount * 100) - 100
     FROM ArrivalByNationality A1
     INNER JOIN ArrivalByNationality A2
     ON A1.countryId = A2.countryId

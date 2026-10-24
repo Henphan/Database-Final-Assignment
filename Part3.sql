@@ -47,7 +47,7 @@ ORDER BY E.year;
 
 -- How did international arrivals by air, road, and water change between '19 and '24
 -- Show the percentage growth
-SELECT A.year, T.mode, A.arrivalCount, A2.arrivalCount,
+SELECT T.mode, A.arrivalCount, A2.arrivalCount,
 (A2.arrivalCount / A.arrivalCount) * 100 - 100 AS growth_pct
 FROM ArrivalByTransport A
 INNER JOIN ArrivalByTransport A2
