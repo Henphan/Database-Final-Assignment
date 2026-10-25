@@ -119,6 +119,6 @@ CREATE TABLE Audit_ArrivalByNationality (
     audit_time TIMESTAMP,
 
     PRIMARY KEY (auditId),
-    FOREIGN KEY (year) REFERENCES Year(year),
-    FOREIGN KEY (countryId) REFERENCES Country(countryId)
+    FOREIGN KEY (year, countryId)
+        REFERENCES ArrivalByNationality(year, countryId)
 );

@@ -36,4 +36,4 @@ CALL insNewArrivalByNationality(2027, 'Mongolian', 67);
 
 -- Year: new, Country: new
 -- Expected behaviour: rollback
-CALL insNewArrivalByNationality(2027, 'Mongolian', -67);
+CALL insNewArrivalByNationality(2028, 'Kenya', -67);

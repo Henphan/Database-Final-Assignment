@@ -185,9 +185,9 @@ try:
 
 	
 except mysql.connector.Error as err:
-    if err.errno == '1062':
+    if err.errno == 1062:
         print("An entry for ({}, {}) already exists.".format(year, nationality))
-    elif err.errno == '1264':
+    elif err.errno == 1264:
         print("The arrival count <{}> is invalid.".format(arrival_count))
     else:
         print("Error while connecting to MySQL", err)   
