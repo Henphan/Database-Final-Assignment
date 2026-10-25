@@ -1,4 +1,4 @@
-DROP PROCEDURE insNewArrivalByNationality;
+DROP PROCEDURE IF EXISTS insNewArrivalByNationality;
 DELIMITER //
 CREATE PROCEDURE insNewArrivalByNationality(
     p_year INT,
@@ -55,7 +55,7 @@ CREATE PROCEDURE insNewArrivalByNationality(
 DELIMITER ;
 
 
-DROP TRIGGER after_ArrivalByNationality_update;
+DROP TRIGGER IF EXISTS after_ArrivalByNationality_update;
 DELIMITER //
 CREATE TRIGGER after_ArrivalByNationality_update
     AFTER UPDATE ON ArrivalByNationality
@@ -81,7 +81,7 @@ CREATE TRIGGER after_ArrivalByNationality_update
 DELIMITER ;
 
 
-DROP VIEW YoY_ArrivalByNationality;
+DROP VIEW IF EXISTS YoY_ArrivalByNationality;
 CREATE VIEW YoY_ArrivalByNationality (year, countryName, previous_year, current_year, pct_change) AS
     SELECT A1.year, C.name, A2.arrivalCount, A1.arrivalCount,
     (A1.arrivalCount / A2.arrivalCount * 100) - 100
