@@ -145,7 +145,6 @@ VALUES
   ("Road");
 
 -- ExpenditureCategory
-
 INSERT INTO ExpenditureCategory (categoryId, category)
 VALUES
     (1, 'Accommodation'),
@@ -154,7 +153,8 @@ VALUES
     (4, 'Sightseeing'),
     (5, 'Shopping'),
     (6, 'Health'),
-    (7, 'Others');
+    (7, 'Others'),
+    (8, 'Entertainment');
 
 
 
