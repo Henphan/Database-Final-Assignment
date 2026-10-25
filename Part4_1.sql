@@ -55,18 +55,27 @@ CREATE PROCEDURE insNewArrivalByNationality(
 DELIMITER ;
 
 
--- TODO: Replace
-DROP TRIGGER before_ArrivalByNationality_update;
+DROP TRIGGER after_ArrivalByNationality_update;
 DELIMITER //
-CREATE TRIGGER before_ArrivalByNationality_update
-    BEFORE UPDATE ON ArrivalByNationality
+CREATE TRIGGER after_ArrivalByNationality_update
+    AFTER UPDATE ON ArrivalByNationality
     FOR EACH ROW
     BEGIN
-        DECLARE err_msg_invalid_count VARCHAR(100);
-        SET err_msg_invalid_count = CONCAT('The new arrival count', NEW.arrivalCount, ' cannot be less than 0');
-        IF NEW.arrivalCount < 0 THEN
-            SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT = err_msg_invalid_count;
+        IF NOT (OLD.arrivalCount <=> NEW.arrivalCount) THEN
+            INSERT INTO Audit_ArrivalByNationality (
+                year,
+                countryId,
+                old_arrivalCount,
+                new_arrivalCount,
+                audit_time
+            )
+                VALUES (
+                    NEW.year,
+                    NEW.countryId,
+                    OLD.arrivalCount,
+                    NEW.arrivalCount,
+                    CURRENT_TIMESTAMP
+                );
         END IF;
     END //
 DELIMITER ;

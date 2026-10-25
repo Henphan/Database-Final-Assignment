@@ -7,7 +7,7 @@ CREATE DATABASE Phan_23028920;
 USE Phan_23028920;
 
 CREATE TABLE Year (
-    year INT NOT NULL AUTO_INCREMENT,
+    year INT NOT NULL,
     PRIMARY KEY (year)
 );
 
@@ -108,4 +108,17 @@ CREATE TABLE ExpenditureByCategory (
         REFERENCES TouristType(typeId),
 
     CHECK (expenditureAmount >= 0)
+);
+
+CREATE TABLE Audit_ArrivalByNationality (
+    auditId INT NOT NULL AUTO_INCREMENT,
+    year INT NOT NULL,
+    countryId INT NOT NULL,
+    old_arrivalCount INT,
+    new_arrivalCount INT,
+    audit_time TIMESTAMP,
+
+    PRIMARY KEY (auditId),
+    FOREIGN KEY (year) REFERENCES Year(year),
+    FOREIGN KEY (countryId) REFERENCES Country(countryId)
 );
