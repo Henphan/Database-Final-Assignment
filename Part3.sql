@@ -37,7 +37,8 @@ SELECT A.year, A.arrivalCount
 FROM ArrivalByNationality A
 INNER JOIN Country C
 ON A.countryId = C.countryId
-WHERE C.name = 'Australian';
+WHERE C.name = 'Australian'
+AND A.year >= 2015;
 
  -- Expenditures that exceeded the average across all categories from international tourists
 SELECT E.year, EC.category, E.expenditureAmount

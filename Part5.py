@@ -137,6 +137,9 @@ def display_menu():
     print("5. Insert a new nationality arrival record")
     print("0. Exit")
 
+conn = None
+cur = None
+
 try:
     # define the connection 
     conn = mysql.connector.connect(
@@ -183,17 +186,22 @@ try:
                     print("Invalid input")
             input("Press <Enter> to continue")
 
-	
+except ValueError:
+    print("Error: Year and arrival count must be integers.")
 except mysql.connector.Error as err:
     if err.errno == 1062:
-        print("An entry for ({}, {}) already exists.".format(year, nationality))
+        print(f"Error: An arrival record for {nationality} in {year} already exists.")
     elif err.errno == 1264:
-        print("The arrival count <{}> is invalid.".format(arrival_count))
+        print("Error: The arrival count is outside the permitted range.")
+    elif err.errno == 1452:
+        print("Error: Foreign key constraint violation.")
     else:
         print("Error while connecting to MySQL", err)   
 finally:
-    if conn.is_connected():
+    if cur is not None:
         cur.close()
+
+    if conn is not None and conn.is_connected():
         conn.close()
         print("MySQL connection is closed now")
 
